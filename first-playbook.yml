@@ -1,0 +1,19 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+    - name: update the cache of ubuntu machines
+      apt:
+        update_cache: true
+        state: latest
+
+    - name: Install Apache2
+      apt:
+        name: apache2
+        state: latest
+
+    - name: Support for Apache2 PHP
+      apt:
+        name: libapache2-mod-php
+        state: latest
