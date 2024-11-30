@@ -1,0 +1,23 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+    - name: Update Cache, Install Apache2 and PHP for the ubuntu machine
+      apt:
+        name:
+          - apache2
+          - libapache2-mod-php
+        state: latest
+        update_cache: true
+      when: ansible_distribution == "ubuntu"
+
+
+    - name: Update Cache, Install httpd and PHP for centos machine
+      yum:
+        name:
+          - httpd
+          - php
+        state: present
+        update_cache: true
+      when: ansible_distribution == "CentOS"

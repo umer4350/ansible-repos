@@ -1,0 +1,12 @@
+---
+
+- hosts: all
+  become: true
+  tasks:   
+    - name: Update Cache, Install Apache and PHP for the machines
+      package:
+        name: 
+          - "{{ apache_var }}"
+          - "{{ php_var }}"
+        state: latest
+        update_cache: true

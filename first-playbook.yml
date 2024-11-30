@@ -7,7 +7,7 @@
       apt:
         update_cache: true
         state: latest
-      when: ansible_distribution == "ubuntu"    
+      when: ansible_distribution == "ubuntu"
 
     - name: Install Apache2 for ubuntu machine
       apt:
