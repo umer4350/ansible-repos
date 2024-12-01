@@ -1,0 +1,51 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+    - name: Update Cache for centos Machine
+      tags: always
+      yum:
+        update_cache: true
+        update_only: yes  
+      when: ansible_distribution == "CentOS"
+    
+    
+    - name: Update Cache for ubuntu Machine
+      tags: always
+      apt:
+        upgrade: dist
+        update_cache: true
+      when: ansible_distribution == "ubuntu"
+
+- hosts: web_servers
+  become: true
+  tasks:
+
+    - name: Install Apache2 and PHP for the ubuntu machine
+      tags: apache, ubuntu  
+      apt:
+        name:
+          - apache2
+          - libapache2-mod-php
+      when: ansible_distribution == "ubuntu"
+
+
+    - name: Install httpd and PHP for centos machine
+      tags: httpd, centos
+      yum:
+        name:
+          - httpd
+          - php
+      when: ansible_distribution == "CentOS"
+
+    - name: copy default web-site to destination index for the ubuntu and centos machine
+      tags: apache, ubuntu
+      copy:
+        src: default_site.html
+        dest: /var/www/html/index.html
+        owner: root
+        group: root
+        mode: 0644
+          
