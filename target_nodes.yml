@@ -1,0 +1,58 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+    - name: Update Cache for centos Machine
+      yum:
+        update_cache: true
+        update_only: yes  
+      when: ansible_distribution == "CentOS"
+    
+    
+    - name: Update Cache for ubuntu Machine
+      apt:
+        upgrade: dist
+        update_cache: true
+      when: ansible_distribution == "ubuntu"
+
+- hosts: web_servers
+  become: true
+  tasks:
+
+    - name: Install Apache2 and PHP for the ubuntu machine
+      apt:
+        name:
+          - apache2
+          - libapache2-mod-php
+      when: ansible_distribution == "ubuntu"
+
+
+    - name: Install httpd and PHP for centos machine
+      yum:
+        name:
+          - httpd
+          - php
+      when: ansible_distribution == "CentOS"
+
+
+- hosts: db_servers
+  become: true
+  tasks:
+
+    - name: Install mariadb for the ubuntu machine
+      apt:
+        name:
+          - mariadb-server
+        state: latest
+      when: ansible_distribution == "ubuntu"
+
+
+    - name: Install mariadb for the centos machine
+      yum:
+        name:
+          - mariadb
+        state: latest
+      when: ansible_distribution == "CentOS"
+        
