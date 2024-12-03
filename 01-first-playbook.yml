@@ -3,27 +3,27 @@
 - hosts: all
   become: true
   tasks:
-    - name: update the cache of ubuntu machines
+    - name: update the cache of ubuntu machine
       apt:
         update_cache: true
         state: latest
-      when: ansible_distribution == "ubuntu"
+      when: ansible_distribution == "Ubuntu"
 
-    - name: Install Apache2 for ubuntu machine
+    - name: Install Apache2 at the ubuntu machine
       apt:
         name: apache2
         state: latest
-      when: ansible_distribution == "ubuntu"
+      when: ansible_distribution == "Ubuntu"
 
-    - name: Support for Apache2 PHP for ubuntu machine
+    - name: Support for Apache2, PHP for ubuntu machine
       apt:
         name: libapache2-mod-php
         state: latest
-      when: ansible_distribution == "ubuntu"
+      when: ansible_distribution == "Ubuntu"
 
     - name: update the cache of centos machine
       yum:
-        update_cache: true
+        update_cache: yes
         state: latest
       when: ansible_distribution == "CentOS"
 

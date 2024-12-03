@@ -1,3 +1,7 @@
+#[test]
+#centos@192.168.0.84 apache_var=httpd php_var=php
+#192.168.0.138 apache_var=apache2 php_var=libapache2-mod-php
+
 [all]
 centos@192.168.0.84
 192.168.0.138
@@ -7,4 +11,8 @@ centos@192.168.0.84
 192.168.0.138
 
 [db_servers]
+192.168.0.138
 centos@192.168.0.84
+
+[workstations]
+192.168.0.138

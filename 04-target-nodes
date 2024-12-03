@@ -5,7 +5,6 @@
   tasks:
 
     - name: Update Cache for centos Machine
-      tags: always
       yum:
         update_cache: true
         update_only: yes  
@@ -13,27 +12,24 @@
     
     
     - name: Update Cache for ubuntu Machine
-      tags: always
       apt:
         upgrade: dist
         update_cache: true
-      when: ansible_distribution == "ubuntu"
+      when: ansible_distribution == "Ubuntu"
 
 - hosts: web_servers
   become: true
   tasks:
 
     - name: Install Apache2 and PHP for the ubuntu machine
-      tags: apache, ubuntu
       apt:
         name:
           - apache2
           - libapache2-mod-php
-      when: ansible_distribution == "ubuntu"
+      when: ansible_distribution == "Ubuntu"
 
 
     - name: Install httpd and PHP for centos machine
-      tags: httpd, centos
       yum:
         name:
           - httpd
@@ -50,7 +46,7 @@
         name:
           - mariadb-server
         state: latest
-      when: ansible_distribution == "ubuntu"
+      when: ansible_distribution == "Ubuntu"
 
 
     - name: Install mariadb for the centos machine

@@ -17,19 +17,19 @@
       apt:
         upgrade: dist
         update_cache: true
-      when: ansible_distribution == "ubuntu"
+      when: ansible_distribution == "Ubuntu"
 
 - hosts: web_servers
   become: true
   tasks:
 
     - name: Install Apache2 and PHP for the ubuntu machine
-      tags: apache, ubuntu  
+      tags: apache, ubuntu
       apt:
         name:
           - apache2
           - libapache2-mod-php
-      when: ansible_distribution == "ubuntu"
+      when: ansible_distribution == "Ubuntu"
 
 
     - name: Install httpd and PHP for centos machine
@@ -40,12 +40,24 @@
           - php
       when: ansible_distribution == "CentOS"
 
-    - name: copy default web-site to destination index for the ubuntu and centos machine
-      tags: apache, ubuntu
-      copy:
-        src: default_site.html
-        dest: /var/www/html/index.html
-        owner: root
-        group: root
-        mode: 0644
-          
+
+- hosts: db_servers
+  become: true
+  tasks:
+
+    - name: Install mariadb for the ubuntu machine
+      tags: maria
+      apt:
+        name:
+          - mariadb-server
+        state: latest
+      when: ansible_distribution == "Ubuntu"
+
+
+    - name: Install mariadb for the centos machine
+      yum:
+        name:
+          - mariadb
+        state: latest
+      when: ansible_distribution == "CentOS"
+        

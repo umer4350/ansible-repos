@@ -10,7 +10,7 @@
           - libapache2-mod-php
         state: latest
         update_cache: true
-      when: ansible_distribution == "ubuntu"
+      when: ansible_distribution == "Ubuntu"
 
 
     - name: Update Cache, Install httpd and PHP for centos machine

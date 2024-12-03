@@ -1,0 +1,22 @@
+---
+
+- hosts: workstations
+  become: true
+  tasks:
+
+    - name: Install Unzip
+      tags: unzip
+      package:
+        name: unzip
+    
+    
+    - name: Install Terraform
+      tags: terra
+      unarchive:
+        src: https://releases.hashicorp.com/terraform/1.10.0/terraform_1.10.0_linux_amd64.zip
+        dest: /usr/local/bin
+        remote_src: yes  
+        group: root
+        owner: root
+        mode: 0755
+                

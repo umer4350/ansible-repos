@@ -1,9 +1,9 @@
 ---
 
-- hosts: all
+- hosts: test
   become: true
   tasks:   
-    - name: Update Cache, Install Apache and PHP for the machines
+    - name: Update Cache, Install Apache and PHP for the Ubuntu and CentOS machines
       package:
         name: 
           - "{{ apache_var }}"

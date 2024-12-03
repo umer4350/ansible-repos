@@ -5,6 +5,7 @@
   tasks:
 
     - name: Update Cache for centos Machine
+      tags: always
       yum:
         update_cache: true
         update_only: yes  
@@ -12,47 +13,39 @@
     
     
     - name: Update Cache for ubuntu Machine
+      tags: always
       apt:
         upgrade: dist
         update_cache: true
-      when: ansible_distribution == "ubuntu"
+      when: ansible_distribution == "Ubuntu"
 
 - hosts: web_servers
   become: true
   tasks:
 
     - name: Install Apache2 and PHP for the ubuntu machine
+      tags: apache, ubuntu  
       apt:
         name:
           - apache2
           - libapache2-mod-php
-      when: ansible_distribution == "ubuntu"
+      when: ansible_distribution == "Ubuntu"
 
 
     - name: Install httpd and PHP for centos machine
+      tags: httpd, centos
       yum:
         name:
           - httpd
           - php
       when: ansible_distribution == "CentOS"
 
-
-- hosts: db_servers
-  become: true
-  tasks:
-
-    - name: Install mariadb for the ubuntu machine
-      apt:
-        name:
-          - mariadb-server
-        state: latest
-      when: ansible_distribution == "ubuntu"
-
-
-    - name: Install mariadb for the centos machine
-      yum:
-        name:
-          - mariadb
-        state: latest
-      when: ansible_distribution == "CentOS"
-        
+    - name: copy default web-site.html file to destination index of apache for the ubuntu and centos machine
+      tags: apache, ubuntu
+      copy:
+        src: default_site.html
+        dest: /var/www/html/index.html
+        owner: root
+        group: root
+        mode: 0644
+          
