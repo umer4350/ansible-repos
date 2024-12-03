@@ -1,0 +1,65 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+    - name: Update Cache for centos Machine
+      tags: always
+      yum:
+        update_cache: true
+        update_only: yes  
+      when: ansible_distribution == "CentOS"
+    
+    
+    - name: Update Cache for Ubuntu Machine
+      tags: always
+      apt:
+        upgrade: dist
+        update_cache: true
+      when: ansible_distribution == "Ubuntu"
+
+- hosts: web_servers
+  become: true
+  tasks:
+
+    - name: Install httpd and PHP for centos machine
+      tags: httpd, centos
+      yum:
+        name:
+          - httpd
+          - php
+      when: ansible_distribution == "CentOS"
+
+    - name: Start the Apache Service for the CentOS Machine
+      tags: httpd. centos
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+      when: ansible_distribution == "CentOS"
+
+    - name: change a line in the configuration file of the apache
+      tags: httpd, centos
+      lineinfile:
+        path: /etc/httpd/conf/httpd.conf
+        regexp: '^ServerAdmin'
+        line: ServerAdmin umerarshad1000@gmail.com
+      when: ansible_distribution == "CentOS"  
+      register: http
+
+    - name: Restart the services of the apache
+      tags: httpd, centos
+      service:
+        name: httpd
+        state: restarted
+      when: http.changed
+        
+    - name: copy default web-site.html file to destination index of apache for the centos machine
+      tags: apache, ubuntu
+      copy:
+        src: default_site.html
+        dest: /var/www/html/index.html
+        owner: root
+        group: root
+        mode: 0644

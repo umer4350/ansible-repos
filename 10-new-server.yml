@@ -1,0 +1,48 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+    - name: Update Cache for centos Machine
+      tags: always
+      yum:
+        update_cache: true
+        update_only: yes  
+      when: ansible_distribution == "CentOS"
+    
+    
+    - name: Update Cache for Ubuntu Machine
+      tags: always
+      apt:
+        upgrade: dist
+        update_cache: true
+      when: ansible_distribution == "Ubuntu"
+
+- hosts: all
+  become: true
+  tasks:
+    
+    - name: add user alia
+      tags: always
+      user:
+        name: alia
+        group: root
+
+    - name: add ssh key for alia
+      tags: always
+      authorized_key:
+        user: alia
+        key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGRqZxtvvzGOGMXBCXA/AcESFDKnfzF9aJJXQSiEaIw1 ansible to access remote machines"
+
+
+    - name: add sudoer file for the alia
+      tags: always
+      copy:
+        src: sudoer_alia
+        dest: /etc/sudoers.d/alia
+        group: root
+        owner: root
+        mode: 0440
+
+
